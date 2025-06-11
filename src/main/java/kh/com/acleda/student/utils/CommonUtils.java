@@ -5,12 +5,22 @@ import lombok.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Random;
 
 @Getter
 @Setter
 public class CommonUtils {
 
+    private static final Logger log = LogManager.getLogger(CommonUtils.class);
+
+    private static final char[] HEX = { '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
     protected static Map<String, String> commonProperties = null;
     public static String getCommonProperties(String commonKey) {
         return commonProperties.get(commonKey);
@@ -59,5 +69,41 @@ public class CommonUtils {
                 code.getMessage(),
                 null);
     }
+
+    public static String generateStdId(){
+        String timestamp = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+        String random = String.format("%06d", new Random().nextInt(10000)); // 4-digit random number
+        return "STD" + timestamp + random;
+    }
+
+    public static String hashSHA256(String pText, String pSalt) {
+        String pTextSalt = pText + pSalt;
+        String pHashedText = "";
+        byte[] ptextSaltbyte;
+        byte[] hashbyte;
+        try {
+            MessageDigest msgdigest = MessageDigest.getInstance("SHA-256");
+            ptextSaltbyte = pTextSalt.getBytes(StandardCharsets.UTF_8);
+            msgdigest.reset();
+            msgdigest.update(ptextSaltbyte);
+            hashbyte = msgdigest.digest();
+            pHashedText = toHexString(hashbyte);
+        } catch (NoSuchAlgorithmException n) {
+            log.error("NoSuchAlgorithmException ex"+ n);
+        }
+        return pHashedText;
+    }
+
+    public static String toHexString(byte[] b) {
+        StringBuilder sb = new StringBuilder();
+        for (byte value : b) {
+            int c = (value >>> 4) & 0xf;
+            sb.append(HEX[c]);
+            c = (value & 0xf);
+            sb.append(HEX[c]);
+        }
+        return sb.toString();
+    }
+
 
 }

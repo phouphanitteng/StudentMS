@@ -15,14 +15,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
-
-    private static final Logger LOG = LogManager.getLogger(JwtServiceImpl.class);
 
     @Value("${app.security.jwt.secret-key}")
     private String secretKey;
@@ -66,9 +63,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token, Student userDetails) {
+        return (extractUsername(token).equals(userDetails.getId().getEmail())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

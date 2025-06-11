@@ -1,16 +1,18 @@
 package kh.com.acleda.student.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "STUDENT")
@@ -20,22 +22,15 @@ import java.time.LocalDate;
 @Builder
 public class Student {
 
-    @Id
-    @Column(name = "STUDENT_ID", length = 20)
-    @NotEmpty(message = "student id must be none")
-    private String studentId;
-
-    @Column(name = "EMAIL", unique = true, length = 100)
-    @NotEmpty(message = "EMAIL must not empty")
-    @Email(message = "Invalid email format")
-    private String email;
+    @EmbeddedId
+    private StudentPk id;
 
     @Column(name = "FIRST_NAME", length = 50)
-    @NotEmpty(message = "First name must not empty")
+    @NotNull(message = "First name must not empty")
     private String firstName;
 
     @Column(name = "LAST_NAME", length = 50)
-    @NotEmpty(message = "Last name must not empty")
+    @NotNull(message = "Last name must not empty")
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -43,11 +38,11 @@ public class Student {
     private Gender gender;
 
     @Column(name = "PASSWORD")
-    @NotEmpty(message = "PASSWORD must not empty")
+    @NotNull(message = "PASSWORD must not empty")
     private String password;
 
     @Column(name = "PHONE_NUMBER", length = 10)
-    @NotEmpty(message = "PHONE_NUMBER must not empty")
+    @NotNull(message = "PHONE_NUMBER must not empty")
     private String phoneNumber;
 
     @Column(name = "DOB")
@@ -63,9 +58,15 @@ public class Student {
 
     @Column(name = "LAST_LOGIN")
     @PastOrPresent(message = "Last Login must be present")
-    private LocalDate lastLogin;
+    private LocalDateTime lastLogin;
 
     @Column(name = "LAST_LOGIN_IP")
     private String lastLoginIP;
+    public Collection<SimpleGrantedAuthority> getAuthorities() {
+        // Assign a default role
+        return List.of(new SimpleGrantedAuthority("STUDENT"));
+        // If roles are stored in the database, fetch them here
+        // e.g., return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList();
+    }
 
 }

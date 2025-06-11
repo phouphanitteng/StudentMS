@@ -26,6 +26,7 @@ import reactor.util.retry.Retry;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
@@ -36,7 +37,7 @@ public class InterfaceAdapter {
 
     public Response<?> callExternalService(String baseUrl, String methodType, JSONObject requestHeader, String requestBody) {
 
-        log.info("Base url: {}", baseUrl);
+        log.info("final url: {}", baseUrl);
         log.info("Method Type: {}", methodType);
         log.info("request Header: {}", requestHeader.toString());
         log.info("request Body: {}", requestBody);
@@ -62,6 +63,7 @@ public class InterfaceAdapter {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
+        AtomicReference<String> responseBody = new AtomicReference<>("");
 
         ClientResponse clientResponse = client
                 .method(HttpMethod.valueOf(methodType))
@@ -74,19 +76,20 @@ public class InterfaceAdapter {
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
                 .acceptCharset(StandardCharsets.UTF_8)
                 .bodyValue(requestBody)
-                .exchangeToMono(Mono::just)
+                .exchangeToMono(response ->
+                        response.bodyToMono(String.class).map(body -> {
+                            log.info("HTTP Status Code: {}", response.statusCode().value());
+                            log.info("Response Body: {}", body);
+                            responseBody.set(body);
+                            return response;
+                        }))
                 .block();
 
-        if(!ObjectUtils.isEmpty(clientResponse)){
 
-            int statusCode = clientResponse.statusCode().value();
-            String responseBody = clientResponse.bodyToMono(String.class).block();
+        return clientResponse != null && !responseBody.get().isEmpty()
+                ? CommonUtils.modifyRespMsgForSuccess(CommonCode.SUCCESS, ConstantVariable.EXTERNAL_SUC, responseBody.get())
+                : CommonUtils.generateResponse(CommonCode.EXTERNAL_ERROR);
 
-            log.info("HTTP Status Code: {}", statusCode);
-            log.info("Response Body: {}", responseBody);
-
-            return CommonUtils.modifyRespMsgForSuccess(CommonCode.SUCCESS, ConstantVariable.EXTERNAL_SUC, responseBody);
-        } else return CommonUtils.generateResponse(CommonCode.EXTERNAL_ERROR);
     }
 
 
@@ -118,6 +121,7 @@ public class InterfaceAdapter {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
+        AtomicReference<String> responseBody = new AtomicReference<>("");
 
         ClientResponse clientResponse = client
                 .method(HttpMethod.valueOf(methodType))
@@ -130,23 +134,36 @@ public class InterfaceAdapter {
                 .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
                 .acceptCharset(StandardCharsets.UTF_8)
                 .bodyValue(requestBody)
-                .exchangeToMono(Mono::just)
-                .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
-                        .filter(this::shouldRetry)
+                .exchangeToMono(response -> {
+                    if (response.statusCode().isError()) {
+                        return response.createException().flatMap(Mono::error);
+                    } else {
+                        return response.bodyToMono(String.class).map(body -> {
+                            responseBody.set(body);
+                            log.info("HTTP Status Code: {}", response.statusCode().value());
+                            log.info("Response Body: {}", body);
+                            return response;
+                        });
+                    }
+                })
+                .retryWhen(
+                        Retry.backoff(3, Duration.ofSeconds(10))
+                                .filter(this::shouldRetry)
+                                .doBeforeRetry(retrySignal ->
+                                        log.warn("Retry attempt #{} due to {}",
+                                                retrySignal.totalRetries() + 1,
+                                                retrySignal.failure().getMessage())
+                                )
+                                .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) ->
+                                        retrySignal.failure()
+                                )
                 )
-                .doFinally(signal -> log.warn("Retrying due to: {}", signal))
                 .block();
 
-        if(!ObjectUtils.isEmpty(clientResponse)){
+        return clientResponse != null && !responseBody.get().isEmpty()
+                ? CommonUtils.modifyRespMsgForSuccess(CommonCode.SUCCESS, ConstantVariable.EXTERNAL_SUC, responseBody.get())
+                : CommonUtils.generateResponse(CommonCode.EXTERNAL_ERROR);
 
-            int statusCode = clientResponse.statusCode().value();
-            String responseBody = clientResponse.bodyToMono(String.class).block();
-
-            log.info("HTTP Status Code: {}", statusCode);
-            log.info("Response Body: {}", responseBody);
-
-            return CommonUtils.modifyRespMsgForSuccess(CommonCode.SUCCESS, ConstantVariable.EXTERNAL_SUC, responseBody);
-        } else return CommonUtils.generateResponse(CommonCode.EXTERNAL_ERROR);
     }
     private boolean shouldRetry(Throwable throwable) {
         if (throwable instanceof WebClientRequestException) {

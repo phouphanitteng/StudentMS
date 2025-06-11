@@ -1,8 +1,8 @@
 package kh.com.acleda.student.service;
 
-import jakarta.validation.Valid;
 import kh.com.acleda.student.dto.Response;
 import kh.com.acleda.student.dto.StudentReq;
+import kh.com.acleda.student.dto.StudentUpdateReq;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ public interface StudentService {
 
     Response<?> getStudentById(String studentId);
 
-    Response<?> updateStudent(StudentReq studentReq);
+    Response<?> updateStudent(StudentUpdateReq studentReq);
 
-    Response<?> deleteStudentById(StudentReq studentId);
+    Response<?> deleteStudentById(String studentId);
 }

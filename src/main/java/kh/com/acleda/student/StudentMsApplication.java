@@ -12,17 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class StudentMsApplication {
 
-    private static final Logger logger = LogManager.getLogger(StudentMsApplication.class);
-
     private final AppConfiguration appConfiguration;
 
     public static void main(String[] args) {
-        logger.info("Log4j config successfully");
-        logger.info("Level Info");
-        logger.debug("Level debug");
-        logger.warn("Level Warn");
-        logger.error("Level Error");
-        logger.info("Enjoy your working bro bro");
         SpringApplication.run(StudentMsApplication.class, args);
     }
 

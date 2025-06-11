@@ -4,6 +4,7 @@ package kh.com.acleda.student.rest;
 import jakarta.validation.Valid;
 import kh.com.acleda.student.dto.Response;
 import kh.com.acleda.student.dto.StudentReq;
+import kh.com.acleda.student.dto.StudentUpdateReq;
 import kh.com.acleda.student.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +17,27 @@ public class StudentAPI {
     private final StudentService studentService;
 
     @PostMapping("/create")
-    public Response<?> create(@RequestBody @Valid StudentReq studentReq){
+    public Response<?> create(@Valid @RequestBody StudentReq studentReq){
         return this.studentService.createStudent(studentReq);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     public Response<?> getAllStudents(){
         return this.studentService.getAllStudents();
     }
 
-    @GetMapping("/get_by_id/{studentId}")
-    public Response<?> getStudentById(@PathVariable @Valid String studentId){
+    @GetMapping("/getStdById")
+    public Response<?> getStudentById(@Valid @RequestParam String studentId){
         return this.studentService.getStudentById(studentId);
     }
 
     @PostMapping("/update")
-    public Response<?> updateStudent(@RequestBody @Valid StudentReq studentReq){
-        return this.studentService.updateStudent(studentReq);
+    public Response<?> updateStudent(@Valid @RequestBody StudentUpdateReq studentUpdateReq){
+        return this.studentService.updateStudent(studentUpdateReq);
     }
 
-    @PostMapping("/delete/{studentId}")
-    public Response<?> getAllStudents(@PathVariable @Valid StudentReq studentId){
+    @PostMapping("/delete")
+    public Response<?> getAllStudents(@Valid @RequestParam String studentId){
         return this.studentService.deleteStudentById(studentId);
     }
 

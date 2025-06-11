@@ -2,23 +2,26 @@ package kh.com.acleda.student.filter;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.entity.Student;
+import kh.com.acleda.student.repository.StudentRepository;
 import kh.com.acleda.student.service.JwtService;
 import kh.com.acleda.student.utils.CommonUtils;
 import kh.com.acleda.student.utils.ConstantVariable;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -33,34 +36,34 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private static final Logger LOG = LogManager.getLogger(JwtAuthFilter.class);
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final StudentRepository studentRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException, ServletException {
 
         final String authHeader = request.getHeader("Authorization");
-        LOG.debug("header: " + authHeader);
+        LOG.debug("request header : " + authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             if(!checkWhitelistedPaths(request)){
-                generateForUnauthorized(response);
+                generateForUnauthorized(response, ConstantVariable.INVALID_HEADER);
             }
             filterChain.doFilter(request, response);
             return;
         }
 
         try {
+
             final String jwt = authHeader.substring(7);
             final String email = this.jwtService.extractUsername(jwt);
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
             if (email != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
-                if (this.jwtService.isTokenValid(jwt, userDetails)) {
+                Student student = studentRepository.findByIdEmail(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("Student not found with email: " + email));
+                if (this.jwtService.isTokenValid(jwt, student)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
+                            student,
                             null,
-                            userDetails.getAuthorities()
+                            student.getAuthorities()
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -68,13 +71,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
+
         } catch (Exception exception) {
-            LOG.error("Exception: " + exception);
-            throw new RuntimeException(exception.getMessage());
+            LOG.error("Exception: ", exception);
+            generateForUnauthorized(response, exception.getMessage());
         }
     }
 
-    private void generateForUnauthorized(HttpServletResponse response) throws IOException {
+    private void generateForUnauthorized(HttpServletResponse response, String message) throws IOException {
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
@@ -83,7 +87,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         Response<?> responseBody = new Response<>();
         responseBody.setResponseCode(1);
         responseBody.setErrorCode("401");
-        responseBody.setErrorMessage(ConstantVariable.TOKEN_ERR);
+        responseBody.setErrorMessage(!StringUtils.isNotBlank(message) ? ConstantVariable.TOKEN_ERR : message);
         responseBody.setData(null);
 
         ObjectMapper objectMapper = new ObjectMapper();

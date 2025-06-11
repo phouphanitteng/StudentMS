@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @Builder
-public class StudentReq {
+public class RegisterReq {
 
     @NotEmpty(message = "First Name is mandatory")
     private String firstName;
@@ -38,11 +38,5 @@ public class StudentReq {
     @NotNull(message = "dateRegister is mandatory")
     private LocalDate dob;
 
-    @PastOrPresent(message = "dateRegister is mandatory")
-    @NotNull(message = "dateRegister is mandatory")
-    private LocalDate dateRegister;
-
-    private String status;
-    private LocalDate lastLogin;
     private String lastLoginIP;
 }

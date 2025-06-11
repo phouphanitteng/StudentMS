@@ -2,6 +2,7 @@ package kh.com.acleda.student.rest;
 
 import jakarta.validation.Valid;
 import kh.com.acleda.student.dto.AuthReq;
+import kh.com.acleda.student.dto.RegisterReq;
 import kh.com.acleda.student.dto.Response;
 import kh.com.acleda.student.dto.StudentReq;
 import kh.com.acleda.student.service.AuthService;
@@ -24,8 +25,8 @@ public class AuthAPI {
     }
 
     @PostMapping("/register")
-    public Response<?> register(@RequestBody @Valid StudentReq authReq) throws Exception {
-        return this.authService.register(authReq);
+    public Response<?> register(@RequestBody @Valid RegisterReq registerReq) throws Exception {
+        return this.authService.register(registerReq);
     }
 
 }

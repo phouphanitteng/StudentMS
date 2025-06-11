@@ -2,19 +2,21 @@ package kh.com.acleda.student.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotEmpty;
 import kh.com.acleda.student.entity.Gender;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class StudentResp {
+@Builder
+public class StudentUpdateReq {
 
+    @NotEmpty(message = "Student Id is required")
     private String studentId;
     private String firstName;
     private String lastName;
@@ -24,7 +26,5 @@ public class StudentResp {
     private LocalDate dob;
     private LocalDate dateRegister;
     private String status;
-    private LocalDateTime lastLogin;
-    private String lastLoginIP;
-
+    private LocalDate lastLogin;
 }
