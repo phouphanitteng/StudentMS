@@ -1,7 +1,7 @@
 package kh.com.acleda.student.service.impl;
 
-import kh.com.acleda.student.dto.AsteroidDataReq;
-import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.payload.AsteroidDataReq;
+import kh.com.acleda.student.payload.Response;
 import kh.com.acleda.student.service.ThirdPartyService;
 import kh.com.acleda.student.utils.InterfaceAdapter;
 import lombok.RequiredArgsConstructor;

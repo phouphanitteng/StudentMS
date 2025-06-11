@@ -1,8 +1,8 @@
 package kh.com.acleda.student.rest;
 
 import jakarta.validation.Valid;
-import kh.com.acleda.student.dto.AsteroidDataReq;
-import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.payload.AsteroidDataReq;
+import kh.com.acleda.student.payload.Response;
 import kh.com.acleda.student.service.ThirdPartyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package kh.com.acleda.student.service.impl;
 
-import kh.com.acleda.student.dto.*;
+import kh.com.acleda.student.payload.*;
 import kh.com.acleda.student.entity.Student;
 import kh.com.acleda.student.entity.StudentPk;
 import kh.com.acleda.student.repository.StudentRepository;
@@ -13,15 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;

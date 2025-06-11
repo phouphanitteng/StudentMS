@@ -1,8 +1,8 @@
 package kh.com.acleda.student.service;
 
-import kh.com.acleda.student.dto.AuthReq;
-import kh.com.acleda.student.dto.RegisterReq;
-import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.payload.AuthReq;
+import kh.com.acleda.student.payload.RegisterReq;
+import kh.com.acleda.student.payload.Response;
 import org.springframework.stereotype.Service;
 
 @Service

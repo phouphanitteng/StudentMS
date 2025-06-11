@@ -1,6 +1,6 @@
 package kh.com.acleda.student.utils;
 
-import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.payload.Response;
 import lombok.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

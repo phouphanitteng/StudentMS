@@ -74,17 +74,10 @@ public class WebFilter implements Filter {
         msg.append("RESPONSE ")
                 .append(response.getStatus());
 
-        // Headers
-        msg.append("\nResponse Headers:");
-        for (String name : response.getHeaderNames()) {
-            msg.append("\n  ").append(name).append(": ").append(response.getHeader(name));
-        }
-
-        // Body
         byte[] content = response.getContentAsByteArray();
         if (content.length > 0) {
-            String body = new String(content, StandardCharsets.UTF_8);
-            msg.append("\nResponse Body:\n").append(maskSensitiveFields(body));
+            String responseBody = new String(content, StandardCharsets.UTF_8);
+            msg.append("\nResponse Body:\n").append(maskSensitiveFields(responseBody));
         }
 
         log.info(msg.toString());

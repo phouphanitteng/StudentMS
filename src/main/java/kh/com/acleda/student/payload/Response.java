@@ -1,4 +1,4 @@
-package kh.com.acleda.student.dto;
+package kh.com.acleda.student.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

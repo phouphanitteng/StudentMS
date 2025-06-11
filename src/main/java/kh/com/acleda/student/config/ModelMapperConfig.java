@@ -1,6 +1,6 @@
 package kh.com.acleda.student.config;
 
-import kh.com.acleda.student.dto.StudentResp;
+import kh.com.acleda.student.payload.StudentResp;
 import kh.com.acleda.student.entity.Student;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;

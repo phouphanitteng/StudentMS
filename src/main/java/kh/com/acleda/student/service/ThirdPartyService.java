@@ -1,7 +1,7 @@
 package kh.com.acleda.student.service;
 
-import kh.com.acleda.student.dto.AsteroidDataReq;
-import kh.com.acleda.student.dto.Response;
+import kh.com.acleda.student.payload.AsteroidDataReq;
+import kh.com.acleda.student.payload.Response;
 import org.springframework.stereotype.Service;
 
 @Service

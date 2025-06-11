@@ -1,5 +1,6 @@
 package kh.com.acleda.student.config;
 
+import kh.com.acleda.student.entity.Role;
 import kh.com.acleda.student.filter.JwtAuthFilter;
 import kh.com.acleda.student.utils.CommonUtils;
 
@@ -34,6 +35,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(CommonUtils.getCommonProperties("security.whitelisted.paths").split(","))
                         .permitAll()
+                        .requestMatchers("/api/student/*").hasAuthority(Role.STUDENT.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

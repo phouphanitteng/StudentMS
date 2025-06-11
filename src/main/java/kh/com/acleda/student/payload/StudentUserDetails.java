@@ -1,4 +1,4 @@
-package kh.com.acleda.student.dto;
+package kh.com.acleda.student.payload;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package kh.com.acleda.student.dto;
+package kh.com.acleda.student.payload;
 
 import lombok.*;
 

@@ -1,7 +1,5 @@
-package kh.com.acleda.student.dto;
+package kh.com.acleda.student.payload;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import kh.com.acleda.student.entity.Gender;
 import lombok.*;
 

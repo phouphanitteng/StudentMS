@@ -1,10 +1,10 @@
 package kh.com.acleda.student.service.impl;
 
 import jakarta.transaction.Transactional;
-import kh.com.acleda.student.dto.Response;
-import kh.com.acleda.student.dto.StudentReq;
-import kh.com.acleda.student.dto.StudentResp;
-import kh.com.acleda.student.dto.StudentUpdateReq;
+import kh.com.acleda.student.payload.Response;
+import kh.com.acleda.student.payload.StudentReq;
+import kh.com.acleda.student.payload.StudentResp;
+import kh.com.acleda.student.payload.StudentUpdateReq;
 import kh.com.acleda.student.entity.Student;
 import kh.com.acleda.student.entity.StudentPk;
 import kh.com.acleda.student.repository.StudentRepository;
