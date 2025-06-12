@@ -11,4 +11,6 @@ public interface ThirdPartyService {
     Response<?> getAsteroidDataInRangeDate(AsteroidDataReq asteroidDataReq);
 
     Response<?> getAsteroidDataBrowser();
+
+
 }
