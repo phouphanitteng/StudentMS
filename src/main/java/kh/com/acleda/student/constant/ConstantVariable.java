@@ -1,4 +1,4 @@
-package kh.com.acleda.student.utils;
+package kh.com.acleda.student.constant;
 
 import org.springframework.stereotype.Component;
 

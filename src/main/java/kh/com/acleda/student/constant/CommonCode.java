@@ -1,5 +1,8 @@
-package kh.com.acleda.student.utils;
+package kh.com.acleda.student.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum CommonCode {
     SUCCESS(0, null,"Success"),
     SERVER_ERROR(1, "999","Internal Server Error"),
@@ -34,18 +37,6 @@ public enum CommonCode {
         this.responseCode = responseCode;
         this.errorCode = errorCode;
         this.message = message;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public Integer getResponseCode() {
-        return responseCode;
     }
 
 }

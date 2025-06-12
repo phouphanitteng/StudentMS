@@ -9,13 +9,11 @@ import kh.com.acleda.student.entity.Student;
 import kh.com.acleda.student.entity.StudentPk;
 import kh.com.acleda.student.repository.StudentRepository;
 import kh.com.acleda.student.service.StudentService;
-import kh.com.acleda.student.utils.CommonCode;
+import kh.com.acleda.student.constant.CommonCode;
 import kh.com.acleda.student.utils.CommonUtils;
-import kh.com.acleda.student.utils.ConstantVariable;
+import kh.com.acleda.student.constant.ConstantVariable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

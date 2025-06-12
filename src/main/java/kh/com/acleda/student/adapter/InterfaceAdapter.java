@@ -1,13 +1,14 @@
-package kh.com.acleda.student.utils;
+package kh.com.acleda.student.adapter;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import kh.com.acleda.student.payload.Response;
+import kh.com.acleda.student.constant.CommonCode;
+import kh.com.acleda.student.utils.CommonUtils;
+import kh.com.acleda.student.constant.ConstantVariable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
