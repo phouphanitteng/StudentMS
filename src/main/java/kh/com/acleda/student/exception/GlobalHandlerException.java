@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(WebClientRequestException.class)
     public ResponseEntity<Response<?>> exception(Exception ex) {
         log.error("Exception: ", ex);
         Response<?> response = new Response<>();

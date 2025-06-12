@@ -1,6 +1,7 @@
 package kh.com.acleda.student.service;
 
-import kh.com.acleda.student.payload.CustomerReq;
+import kh.com.acleda.student.payload.ApiRequest;
+import kh.com.acleda.student.payload.UserInfoRequest;
 import kh.com.acleda.student.payload.PayPalTokenReq;
 import kh.com.acleda.student.payload.Response;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,13 @@ import org.springframework.stereotype.Service;
 public interface PayPalService {
     Response<?> generateAccessToken(PayPalTokenReq payPalTokenReq);
 
-    Response<?> getUserInfo(CustomerReq customerReq);
+    Response<?> getUserInfo(ApiRequest<UserInfoRequest> apiRequest);
 
-    Response<?> createOrder(CustomerReq customerReq);
+    Response<?> createOrder(UserInfoRequest userInfoRequest);
 
-    Response<?> showOrderDetails(CustomerReq customerReq);
+    Response<?> showOrderDetails(UserInfoRequest userInfoRequest);
 
-    Response<?> confirmPayment(CustomerReq customerReq);
+    Response<?> confirmPayment(UserInfoRequest userInfoRequest);
 
-    Response<?> authorizePayment(CustomerReq customerReq);
+    Response<?> authorizePayment(UserInfoRequest userInfoRequest);
 }

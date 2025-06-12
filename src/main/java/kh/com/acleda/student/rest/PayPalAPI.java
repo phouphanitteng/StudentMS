@@ -1,7 +1,8 @@
 package kh.com.acleda.student.rest;
 
 import jakarta.validation.Valid;
-import kh.com.acleda.student.payload.CustomerReq;
+import kh.com.acleda.student.payload.ApiRequest;
+import kh.com.acleda.student.payload.UserInfoRequest;
 import kh.com.acleda.student.payload.PayPalTokenReq;
 import kh.com.acleda.student.payload.Response;
 import kh.com.acleda.student.service.PayPalService;
@@ -17,33 +18,33 @@ public class PayPalAPI {
     private final PayPalService payPalService;
 
     @PostMapping(value = "/access_token", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> generateAccessToken(PayPalTokenReq payPalTokenReq){
+    public Response<?> generateAccessToken(@Valid @RequestBody PayPalTokenReq payPalTokenReq){
        return this.payPalService.generateAccessToken(payPalTokenReq);
     }
 
     @GetMapping (value = "/user_infor", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> getUserInfo(@Valid @RequestBody CustomerReq customerReq){
-        return this.payPalService.getUserInfo(customerReq);
+    public Response<?> getUserInfo(@Valid @RequestBody ApiRequest<UserInfoRequest> apiRequest){
+        return this.payPalService.getUserInfo(apiRequest);
     }
 
     @PostMapping(value = "/create_order", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> createOrder(@Valid @RequestBody CustomerReq customerReq){
-        return this.payPalService.createOrder(customerReq);
+    public Response<?> createOrder(@Valid @RequestBody UserInfoRequest userInfoRequest){
+        return this.payPalService.createOrder(userInfoRequest);
     }
 
     @GetMapping (value = "/order_detail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> showOrderDetails(@Valid @RequestBody CustomerReq customerReq){
-        return this.payPalService.showOrderDetails(customerReq);
+    public Response<?> showOrderDetails(@Valid @RequestBody UserInfoRequest userInfoRequest){
+        return this.payPalService.showOrderDetails(userInfoRequest);
     }
 
     @PostMapping(value = "/confirm_payment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> confirmPayment(@Valid @RequestBody CustomerReq customerReq){
-        return this.payPalService.confirmPayment(customerReq);
+    public Response<?> confirmPayment(@Valid @RequestBody UserInfoRequest userInfoRequest){
+        return this.payPalService.confirmPayment(userInfoRequest);
     }
 
     @PostMapping(value = "/authorize", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response<?> authorizePayment(@Valid @RequestBody CustomerReq customerReq){
-        return this.payPalService.authorizePayment(customerReq);
+    public Response<?> authorizePayment(@Valid @RequestBody UserInfoRequest userInfoRequest){
+        return this.payPalService.authorizePayment(userInfoRequest);
     }
 
 }

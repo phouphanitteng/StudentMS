@@ -1,6 +1,8 @@
 package kh.com.acleda.student.utils;
 
 import kh.com.acleda.student.constant.CommonCode;
+import kh.com.acleda.student.constant.ConstantVariable;
+import kh.com.acleda.student.payload.Header;
 import kh.com.acleda.student.payload.Response;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -102,6 +104,27 @@ public class CommonUtils {
             sb.append(HEX[c]);
         }
         return sb.toString();
+    }
+
+    public static Header obtainHeaderBasicAuth(String username, String password){
+        return Header.builder()
+                .username(username)
+                .password(password)
+                .authorizeType(ConstantVariable.AUTHORIZED_BASIC)
+                .build();
+    }
+    public static Header obtainHeaderBearerAuth(String authorization){
+        return Header.builder()
+                .authorization(authorization)
+                .authorizeType(ConstantVariable.AUTHORIZED_BEARER)
+                .build();
+    }
+
+    public static Header obtainHeaderApiKey(String apiKeyName, String apiKeyValue){
+        return Header.builder()
+                .apiKeyName(apiKeyName)
+                .apiKeyValue(apiKeyValue)
+                .build();
     }
 
 

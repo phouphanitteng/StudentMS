@@ -2,6 +2,11 @@ package kh.com.acleda.student.filter;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -69,6 +74,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
+        } catch (ExpiredJwtException ex) {
+            log.error("JWT expired: {}", ex.getMessage(), ex);
+            generateForUnauthorized(response, ConstantVariable.JWT_EXPIRED);
+        } catch (MalformedJwtException ex) {
+            log.error("Malformed JWT: {}", ex.getMessage(), ex);
+            generateForUnauthorized(response, ConstantVariable.JWT_INVALID);
+        } catch (SignatureException ex) {
+            log.error("Invalid JWT signature: {}", ex.getMessage(), ex);
+            generateForUnauthorized(response, ConstantVariable.JWT_INVALID);
+        } catch (UnsupportedJwtException ex) {
+            log.error("Unsupported JWT: {}", ex.getMessage(), ex);
+            generateForUnauthorized(response, ConstantVariable.JWT_UNSUPPORT);
+        } catch (JwtException ex) {
+            log.error("JWT error: {}", ex.getMessage(), ex);
+            generateForUnauthorized(response, "JWT error: " + ex.getMessage());
         } catch (Exception exception) {
             log.error("Exception: ", exception);
             generateForUnauthorized(response, exception.getMessage());

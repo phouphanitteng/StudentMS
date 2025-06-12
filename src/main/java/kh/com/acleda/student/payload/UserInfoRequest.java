@@ -9,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-public class CustomerReq {
+public class UserInfoRequest {
 
-    @NotEmpty(message = "customerId is mandatory")
-    private String customerId;
+    @NotEmpty(message = "userId is mandatory")
+    private String userId;
 
 }
