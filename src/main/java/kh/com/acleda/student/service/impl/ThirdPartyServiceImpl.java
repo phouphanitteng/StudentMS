@@ -5,6 +5,7 @@ import kh.com.acleda.student.payload.Response;
 import kh.com.acleda.student.service.ThirdPartyService;
 import kh.com.acleda.student.utils.InterfaceAdapter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -13,9 +14,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ThirdPartyServiceImpl implements ThirdPartyService {
-
-    private static final Logger log = LogManager.getLogger(ThirdPartyServiceImpl.class);
 
     private final InterfaceAdapter interfaceAdapter;
 

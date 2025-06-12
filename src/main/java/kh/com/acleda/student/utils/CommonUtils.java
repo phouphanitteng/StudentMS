@@ -2,6 +2,7 @@ package kh.com.acleda.student.utils;
 
 import kh.com.acleda.student.payload.Response;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,9 +16,8 @@ import java.util.Random;
 
 @Getter
 @Setter
+@Slf4j
 public class CommonUtils {
-
-    private static final Logger log = LogManager.getLogger(CommonUtils.class);
 
     private static final char[] HEX = { '0', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };

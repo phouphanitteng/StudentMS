@@ -1,6 +1,7 @@
 package kh.com.acleda.student.exception;
 
 import kh.com.acleda.student.payload.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalHandlerException {
-
-    private static final Logger log = LogManager.getLogger(GlobalHandlerException.class);
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Response<?>> runTimeEx(RuntimeException ex) {

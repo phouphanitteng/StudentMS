@@ -5,6 +5,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import kh.com.acleda.student.payload.Response;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -30,9 +31,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InterfaceAdapter {
-
-    private static final Logger log = LogManager.getLogger(InterfaceAdapter.class);
 
     public Response<?> callExternalService(String baseUrl, String methodType, JSONObject requestHeader, String requestBody) {
 

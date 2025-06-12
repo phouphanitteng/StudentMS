@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import kh.com.acleda.student.payload.StudentReq;
 import kh.com.acleda.student.entity.Student;
 import kh.com.acleda.student.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @Service
+@Slf4j
 public class JwtServiceImpl implements JwtService {
 
     @Value("${app.security.jwt.secret-key}")

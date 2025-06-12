@@ -10,6 +10,7 @@ import kh.com.acleda.student.utils.CommonCode;
 import kh.com.acleda.student.utils.CommonUtils;
 import kh.com.acleda.student.utils.ConstantVariable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -25,8 +26,8 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceImpl implements AuthService {
-    private static final Logger log = LogManager.getLogger(AuthServiceImpl.class);
 
     private final StudentRepository studentRepository;
     private final JwtService jwtService;

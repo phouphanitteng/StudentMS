@@ -14,6 +14,7 @@ import kh.com.acleda.student.service.JwtService;
 import kh.com.acleda.student.utils.CommonUtils;
 import kh.com.acleda.student.utils.ConstantVariable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.lang.NonNull;
@@ -30,9 +31,8 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
-
-    private static final Logger LOG = LogManager.getLogger(JwtAuthFilter.class);
 
     private final JwtService jwtService;
     private final StudentRepository studentRepository;
@@ -41,7 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws IOException, ServletException {
 
         final String authHeader = request.getHeader("Authorization");
-        LOG.debug("request header : " + authHeader);
+        log.debug("request header : " + authHeader);
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             if(!checkWhitelistedPaths(request)){
                 generateForUnauthorized(response, ConstantVariable.INVALID_HEADER);
@@ -72,7 +72,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception exception) {
-            LOG.error("Exception: ", exception);
+            log.error("Exception: ", exception);
             generateForUnauthorized(response, exception.getMessage());
         }
     }
