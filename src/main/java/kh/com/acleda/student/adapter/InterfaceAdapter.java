@@ -42,21 +42,16 @@ public class InterfaceAdapter {
         log.info("request Header: {}", requestHeader.toString());
         log.info("request Body: {}", requestBody);
 
-        // configure timeout
-        int connectedTimeout = 5000;
-        int readTimeout = 5000;
-        int writeTimeout = 5000;
-
-        log.info("connection timeout: {}", connectedTimeout);
-        log.info("Read timeout: {}", readTimeout);
-        log.info("Write timeout: {}", writeTimeout);
+        log.info("connection timeout: {}", ConstantVariable.CONNECTED_TIMEOUT);
+        log.info("Read timeout: {}", ConstantVariable.READ_TIMEOUT);
+        log.info("Write timeout: {}", ConstantVariable.WRITE_TIMEOUT);
 
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectedTimeout)
-                .responseTimeout(Duration.ofMillis(5000))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, ConstantVariable.CONNECTED_TIMEOUT)
+                .responseTimeout(Duration.ofMillis(ConstantVariable.CONNECTED_TIMEOUT))
                 .doOnConnected(conn -> conn
-                        .addHandlerLast(new ReadTimeoutHandler(readTimeout, TimeUnit.MILLISECONDS))
-                        .addHandlerLast(new WriteTimeoutHandler(writeTimeout, TimeUnit.MILLISECONDS)));
+                        .addHandlerLast(new ReadTimeoutHandler(ConstantVariable.READ_TIMEOUT, TimeUnit.MILLISECONDS))
+                        .addHandlerLast(new WriteTimeoutHandler(ConstantVariable.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)));
 
         WebClient client = WebClient.builder()
                 .baseUrl(baseUrl)
@@ -100,21 +95,16 @@ public class InterfaceAdapter {
         log.info("request Header: {}", requestHeader.toString());
         log.info("request Body: {}", requestBody);
 
-        // configure timeout
-        int connectedTimeout = 5000;
-        int readTimeout = 5000;
-        int writeTimeout = 5000;
-
-        log.info("connection timeout: {}", connectedTimeout);
-        log.info("Read timeout: {}", readTimeout);
-        log.info("Write timeout: {}", writeTimeout);
+        log.info("connection timeout: {}", ConstantVariable.CONNECTED_TIMEOUT);
+        log.info("Read timeout: {}", ConstantVariable.READ_TIMEOUT);
+        log.info("Write timeout: {}", ConstantVariable.WRITE_TIMEOUT);
 
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectedTimeout)
-                .responseTimeout(Duration.ofMillis(5000))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, ConstantVariable.CONNECTED_TIMEOUT)
+                .responseTimeout(Duration.ofMillis(ConstantVariable.CONNECTED_TIMEOUT))
                 .doOnConnected(conn -> conn
-                        .addHandlerLast(new ReadTimeoutHandler(readTimeout, TimeUnit.MILLISECONDS))
-                        .addHandlerLast(new WriteTimeoutHandler(writeTimeout, TimeUnit.MILLISECONDS)));
+                        .addHandlerLast(new ReadTimeoutHandler(ConstantVariable.READ_TIMEOUT, TimeUnit.MILLISECONDS))
+                        .addHandlerLast(new WriteTimeoutHandler(ConstantVariable.WRITE_TIMEOUT, TimeUnit.MILLISECONDS)));
 
         WebClient client = WebClient.builder()
                 .baseUrl(baseUrl)

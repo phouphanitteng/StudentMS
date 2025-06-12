@@ -16,4 +16,7 @@ public class ConstantVariable {
     public static final String STD_DELETED = "Student has been deleted successfully";
     public static final String INVALID_HEADER = "Invalid Request Header";
     public static final String UPDATE_SUCCESS = "Student has been updated successfully";
+    public static final int CONNECTED_TIMEOUT = 5000;
+    public static final int READ_TIMEOUT = 5000;
+    public static final int WRITE_TIMEOUT = 5000;
 }
