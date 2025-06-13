@@ -24,4 +24,6 @@ public class ConstantVariable {
     public static final String JWT_EXPIRED = "JWT token has expired";
     public static final String JWT_INVALID = "Invalid JWT token";
     public static final String JWT_UNSUPPORT = "Unsupported JWT token";
+    public static final int RETRY_ATTEMPTS = 3;
+    public static final int DURATION_SECOND = 10 ;
 }
